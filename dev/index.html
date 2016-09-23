@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="download">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body ng-controller="ctrl">
+	<div>
+		<button ng-click="test()">Click me</button>
+		<input type="checkbox" ng-model="fail">Fail
+
+
+		<button ng-click="test2()">Click me 2</button>
+		<input type="checkbox" ng-model="fail2">Fail
+
+		status: {{status2}}
+
+
+		<button ng-click="loadData()">Load Data</button><br/>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	<script src="js/script.js"></script>
+</body>
+</html>
