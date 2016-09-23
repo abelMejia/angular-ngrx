@@ -1,3 +1,4 @@
+var $ = require('./config.json');
 var gulp = require('gulp')
 var express = require("express");
 var app = express();  //Instanciar
@@ -8,9 +9,6 @@ var request = require('request');
 var fs = require('fs');
 
 gulp.task('default', function () {
-	var dev = './dev'
-	var folderSrc = dev + '/pdf/';
-	var folderDest = './public/';	
 
 	var copy = function (dev, deploy, name) {
 	  	gulp.src(dev)
@@ -18,7 +16,7 @@ gulp.task('default', function () {
 	    .pipe(gulp.dest(deploy))
 	}
 
-	fs.readFile(dev + '/language.json', 'utf8', function(err, data) {
+	fs.readFile($.dev + '/' + $.json +'.json', 'utf8', function(err, data) {
 	    if( err ){
 	        console.log(err)
 	    }
@@ -33,14 +31,38 @@ gulp.task('default', function () {
 				var dest = path.dirname(urlDest);
 
 				copy(
-					folderSrc + src, 
-					folderDest + dest,
+					$.folderSrc + src, 
+					$.folderDest + dest,
 					name	
 				)
 			})
 	    }
 	});
 })
+
+/*gulp.task('zip', function () {
+	var dev = './dev'
+	var folderSrc = dev + '/pdf/';
+	var folderDest = './public/';	
+
+	var DIR = './public/';
+	var FILES = fs.readdirSync(DIR);
+
+	var zip = function (dev, deploy, name) {
+	  	gulp.src(dev)
+	  	.pipe(rename(name))
+	    .pipe(gulp.dest(deploy))
+	}
+
+	FILES.forEach(function(file) {
+		console.log(file);
+		zip(
+			folderSrc + src, 
+			folderDest + dest,
+			name	
+		)
+	}) 
+});*/
 
 gulp.task('clean', function () {
     // Delete Temp Files & Folders
