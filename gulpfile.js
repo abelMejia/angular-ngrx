@@ -4,71 +4,62 @@ var express = require("express");
 var app = express();  //Instanciar
 var del = require('del')
 var rename = require("gulp-rename");
+var zip = require("gulp-zip");
 var path = require('path');
-var request = require('request');
+var merge = require('merge-stream');
+var runSequence = require('run-sequence');
 var fs = require('fs');
 
-gulp.task('default', function () {
 
+gulp.task('copy', function () {
+	var stream;
 	var copy = function (dev, deploy, name) {
-	  	gulp.src(dev)
+	  stream = gulp.src(dev)
 	  	.pipe(rename(name))
 	    .pipe(gulp.dest(deploy))
 	}
 
-	fs.readFile($.dev + '/' + $.json +'.json', 'utf8', function(err, data) {
-	    if( err ){
-	        console.log(err)
-	    }
-	    else{
-	    	var array = JSON.parse(data);
+	var ext = '.json';
+	var array = require($.dev + '/' + $.json + ext);
+	
+	array.map(function(it) {
+		var src = it.src;
+		var urlDest = it.dest;
 
-	        array.forEach(function (val, idx) {
-				var src = val.src;
-				var urlDest = val.dest;
+		var name = path.basename(urlDest);
+		var dest = path.dirname(urlDest);
 
-				var name = path.basename(urlDest);
-				var dest = path.dirname(urlDest);
-
-				copy(
-					$.folderSrc + src, 
-					$.folderDest + dest,
-					name	
-				)
-			})
-	    }
-	});
-})
-
-/*gulp.task('zip', function () {
-	var dev = './dev'
-	var folderSrc = dev + '/pdf/';
-	var folderDest = './public/';	
-
-	var DIR = './public/';
-	var FILES = fs.readdirSync(DIR);
-
-	var zip = function (dev, deploy, name) {
-	  	gulp.src(dev)
-	  	.pipe(rename(name))
-	    .pipe(gulp.dest(deploy))
-	}
-
-	FILES.forEach(function(file) {
-		console.log(file);
-		zip(
-			folderSrc + src, 
-			folderDest + dest,
+		copy(
+			$.folderSrc + src, 
+			$.folderDest + dest,
 			name	
 		)
+	});
+
+	return merge(stream);
+});
+
+gulp.task('zip', function () {
+	var FILES = fs.readdirSync('./public/');
+
+	FILES.map( function(file) {
+		console.log(file);
+		return gulp.src('./public/'+ file + '/**')
+			.pipe(zip(file + '.zip'))
+			.pipe(gulp.dest('./public/'))
 	}) 
-});*/
+});
+
 
 gulp.task('clean', function () {
     // Delete Temp Files & Folders
-    del(['./public/*']);
+    del(['./public/**/*']);
 
-})
+});
+
+gulp.task('default', function(cb){
+	runSequence('copy', 'zip',cb);
+}); 
 
 gulp.task('express', function () {
 	var PORT = 4000
