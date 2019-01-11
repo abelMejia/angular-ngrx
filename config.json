@@ -1,6 +1,0 @@
-{
-	"dev": "./dev",
-	"folderSrc": "./dev/pdf/",
-	"folderDest": "./public/",
-	"json": "language"
-}
