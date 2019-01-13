@@ -4,6 +4,7 @@ import {AuthActionTypes, LoginAttempted, LoginFailed, LoginSuccessful, LogoutSuc
 import {AuthService} from './auth.service';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
@@ -19,8 +20,15 @@ export class AuthEffects {
       ))
   );
 
+  @Effect({dispatch: false})
+  loginSuccessful$ = this.actions$.pipe(
+    ofType(AuthActionTypes.LoginSuccessful),
+    switchMap(() => of(this.router.navigateByUrl('dashboard')))
+  );
+
   constructor(
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 }

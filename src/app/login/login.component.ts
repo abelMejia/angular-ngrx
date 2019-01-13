@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-      this.store.dispatch(new LoginAttempted({email: this.username.value, password: this.password.value}))
+      this.store.dispatch(new LoginAttempted({email: this.username.value, password: this.password.value}));
+      
   }
 
 }

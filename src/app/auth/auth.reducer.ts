@@ -3,10 +3,12 @@ import { AuthActions, AuthActionTypes } from './auth.actions';
 
 export interface State {
     username: string;
+    token: string;
 }
 
 export const initialState: State = {
-    username: undefined
+    username: undefined,
+    token: undefined
 };
 
 export function reducer(state = initialState, action: AuthActions): State {
