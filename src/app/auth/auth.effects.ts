@@ -26,9 +26,21 @@ export class AuthEffects {
     switchMap(() => of(this.router.navigateByUrl('dashboard')))
   );
 
-  constructor(
-    private actions$: Actions,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  @Effect()
+  logoutRequested$ = this.actions$.pipe(
+    ofType(AuthActionTypes.LogoutRequested),
+    switchMap(() => this.authService.logout().pipe(
+      map(() => new LogoutSuccessful())
+    ))
+  );
+
+  @Effect({dispatch: false})
+  logoutSuccessful$ = this.actions$.pipe(
+    ofType(AuthActionTypes.LogoutSuccessful),
+    switchMap(() => this.router.navigateByUrl('login'))
+  );
+
+  constructor(private actions$: Actions,
+              private authService: AuthService,
+              private router: Router) {}
 }

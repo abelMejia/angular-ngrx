@@ -1,14 +1,13 @@
-import { Action } from '@ngrx/store';
-import { AuthActions, AuthActionTypes } from './auth.actions';
+import {AuthActions, AuthActionTypes} from './auth.actions';
 
 export interface State {
-    username: string;
-    token: string;
+  username: string;
+  token: string;
 }
 
 export const initialState: State = {
-    username: undefined,
-    token: undefined
+  username: undefined,
+  token: undefined
 };
 
 export function reducer(state = initialState, action: AuthActions): State {
@@ -20,23 +19,21 @@ export function reducer(state = initialState, action: AuthActions): State {
         username: action.payload.username
       };
 
-   case AuthActionTypes.LoginFailed:
-     return {
-       ...state,
-       username: undefined
-     };
+    case AuthActionTypes.LoginFailed:
+      return {
+        ...state,
+        username: undefined
+      };
 
-   case AuthActionTypes.LoginSuccessful:
-     return {
-       ...state,
-       token: action.payload
-     };
-
-   case AuthActionTypes.LogoutSuccessful:
-       return {
-         ...initialState
-       };
-
+    case AuthActionTypes.LoginSuccessful:
+      return {
+        ...state,
+        token: action.payload
+      };
+    case AuthActionTypes.LogoutSuccessful:
+      return {
+        ...initialState
+      };
     default:
       return state;
   }

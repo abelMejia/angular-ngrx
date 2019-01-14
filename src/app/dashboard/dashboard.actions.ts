@@ -1,11 +1,17 @@
-import { Action } from '@ngrx/store';
+import {PayloadAction} from '../app.model';
+import {LogoutSuccessful} from '../auth/auth.actions';
 
 export enum DashboardActionTypes {
-  LoadDashboards = '[Dashboard] Load Dashboards'
+  DashboardLoadStart = '[Dashboard] Dashboard load started',
+  DashboardLoadEnd = '[Dashboard] Dashboard load finished'
 }
 
-export class LoadDashboards implements Action {
-  readonly type = DashboardActionTypes.LoadDashboards;
+export class DashboardLoadStart extends PayloadAction {
+  readonly type = DashboardActionTypes.DashboardLoadStart;
 }
 
-export type DashboardActions = LoadDashboards;
+export class DashboardLoadEnd extends PayloadAction {
+  readonly type = DashboardActionTypes.DashboardLoadEnd;
+}
+
+export type DashboardActions = DashboardLoadStart | DashboardLoadEnd | LogoutSuccessful;

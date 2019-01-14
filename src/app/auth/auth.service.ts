@@ -5,9 +5,10 @@ import {HttpClient} from '@angular/common/http';
 export class AuthService {
 
   constructor(private httpClient: HttpClient) { }
-
-  login(payload: {email: string; password: string;}) {
-     return this.httpClient.post('https://reqres.in/api/login', payload);
+  login(payload: {username: string; password: string;}) {
+    return this.httpClient.post('https://reqres.in/api/login', payload);
   }
-
+  logout() {
+    return this.httpClient.get('https://reqres.in/api/users/1');
+  }
 }
